@@ -394,8 +394,7 @@
 [[projects]]
   name = "gopkg.in/gomail.v2"
   packages = ["."]
-  revision = "41f3572897373c5538c50a2402db15db079fa4fd"
-  version = "2.0.0"
+  revision = "81ebce5c23dfd25c6c67194b37d3dd3f338c98b1"
 
 [[projects]]
   name = "gopkg.in/yaml.v2"
@@ -406,6 +405,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "ab75946b2b2a58d125fbfca14055c30fd13fdf939affb895a0402918f85d79aa"
+  inputs-digest = "fe3e53223b481fa595ee6bdb0fc4a8735b4f0680b2d10fedb5e610c76cee0fe0"
   solver-name = "gps-cdcl"
   solver-version = 1
