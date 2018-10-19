@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"github.com/astaxie/beego"
@@ -18,6 +19,10 @@ func init() {
 	for _, v := range nodeAddresses {
 		n := node{Addr: v}
 		monitorNodes = append(monitorNodes, &n)
+	}
+
+	if 1 > len(monitorNodes) {
+		log.Fatalln("node:address invalid")
 	}
 
 	beego.Debug("config node::address ", nodeAddresses)
@@ -37,7 +42,7 @@ func (n *node) CheckValidator(addrs []string) {
 	if nil != err {
 		emailBody := fmt.Sprintf("get validator set failed,node:%s,err:%s", n.String(), err.Error())
 		beego.Error(emailBody)
-		SendMail(emailTos, "get validator set failed", emailBody)
+		SendMail(emailTos, "get validatorSet failed", emailBody)
 
 		return //TODO try 3 times?
 	}
