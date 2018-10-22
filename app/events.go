@@ -17,9 +17,11 @@ import (
 )
 
 func ReadyForVoteHandler(query string, data events.EventData) error {
-	for _, v := range data.(tmtypes.EventDataTx).TxResult.Result.Tags {
+	tags := data.(tmtypes.EventDataTx).TxResult.Result.Tags
+	for _, v := range tags {
+		beego.Debug(v.String())
 		if "voting-period-start" == string(v.Key) {
-			var id uint64
+			var id int64
 			err := utils.CDC.UnmarshalBinaryBare(v.Value, &id)
 			if nil != err {
 				beego.Error(err)

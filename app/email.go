@@ -27,7 +27,7 @@ func SendMail(tos []string, subject, body string) error {
 	m.SetHeader("Subject", subject)
 	m.SetBody("text/html", body)
 
-	err := gomail.NewDialer(host, 25, user, password).DialAndSend(m)
+	err := gomail.NewPlainDialer(host, 25, user, password).DialAndSend(m)
 	if err != nil {
 		beego.Error("dial and send email failed,err:", err)
 		return err

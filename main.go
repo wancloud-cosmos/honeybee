@@ -1,9 +1,8 @@
 package main
 
 import (
-	_ "validator-monitor/routers"
-
 	"validator-monitor/app"
+	_ "validator-monitor/routers"
 
 	"github.com/astaxie/beego"
 )

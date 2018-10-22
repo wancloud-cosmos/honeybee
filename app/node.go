@@ -2,7 +2,6 @@ package app
 
 import (
 	"fmt"
-	"log"
 	"strings"
 
 	"github.com/astaxie/beego"
@@ -22,7 +21,7 @@ func init() {
 	}
 
 	if 1 > len(monitorNodes) {
-		log.Fatalln("node:address invalid")
+		panic("node:address invalid")
 	}
 
 	beego.Debug("config node::address ", nodeAddresses)
