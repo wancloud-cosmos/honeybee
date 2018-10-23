@@ -43,7 +43,7 @@ func (n *node) CheckValidator(addrs []string) {
 		beego.Error(emailBody)
 		SendMail(emailTos, "get validatorSet failed", emailBody)
 
-		return //TODO try 3 times?
+		return
 	}
 
 	for _, a := range addrs {

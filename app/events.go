@@ -19,7 +19,7 @@ import (
 func ReadyForVoteHandler(query string, data events.EventData) error {
 	tags := data.(tmtypes.EventDataTx).TxResult.Result.Tags
 	for _, v := range tags {
-		beego.Debug(v.Value)
+		beego.Debug(string(v.Key), string(v.Value))
 		if "voting-period-start" == string(v.Key) {
 			var id int64
 			err := utils.CDC.UnmarshalBinaryBare(v.Value, &id)
@@ -48,7 +48,6 @@ func EventHandler(respCh chan types.RPCResponse, handler SubscribeCallbackFunc) 
 		}
 		beego.Debug(q, data)
 
-		//TODO should more research to find out why first event is empty
 		if "" == q {
 			continue
 		}

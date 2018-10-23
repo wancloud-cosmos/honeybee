@@ -19,7 +19,7 @@ func init() {
 	var err error
 	interval, err = beego.AppConfig.Int64("interval")
 	if nil != err {
-		beego.Critical(err)
+		panic(err)
 	}
 }
 
@@ -30,7 +30,7 @@ func Watch() {
 				n.CheckValidator(validatorAddresses)
 			}
 
-			time.Sleep(time.Second * time.Duration(interval)) //TODO config
+			time.Sleep(time.Second * time.Duration(interval))
 		}
 	}()
 }
