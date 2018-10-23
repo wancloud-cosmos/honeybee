@@ -26,8 +26,9 @@ func AutoVote(id int64) error {
 	}
 	//TODO notify admin by sending email
 
+	emailTitle := fmt.Sprintf("vote proposal-id:%d success", id)
 	emailBody := fmt.Sprintf("vote proposal-id:%d success", id)
 	beego.Error(emailBody)
-	SendMail(emailTos, "vote success", emailBody)
+	SendMail(emailTos, emailTitle, emailBody)
 	return nil
 }
