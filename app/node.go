@@ -36,23 +36,26 @@ func (n *node) String() string {
 }
 
 //check if the validator in the validator set
-func (n *node) CheckValidator(addrs []string) {
+func (n *node) CheckValidator(addrs []string) error {
 	vset, err := client.NewHTTP(n.Addr, "/websocket").Validators(nil)
 	if nil != err {
 		emailBody := fmt.Sprintf("get validator set failed,node:%s,err:%s", n.String(), err.Error())
 		beego.Error(emailBody)
 		SendMail(emailTos, "get validatorSet failed", emailBody)
 
-		return
+		return err
 	}
 
 	for _, a := range addrs {
 		if !n.IsInVSet(a, vset.Validators) {
 			emailBody := fmt.Sprintf("validator:%s is not in vset via node:%s", a, n.String())
 			beego.Error(emailBody)
+			err = fmt.Errorf(emailBody)
 			SendMail(emailTos, "validator is not in vset", emailBody)
 		}
 	}
+
+	return err
 }
 
 func (n *node) IsInVSet(addr string, vset []*types.Validator) bool {

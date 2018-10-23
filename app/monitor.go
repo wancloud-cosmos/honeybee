@@ -25,12 +25,17 @@ func init() {
 
 func Watch() {
 	go func() {
+		var waitTime = time.Duration(interval)
 		for {
-			for _, n := range monitorNodes {
-				n.CheckValidator(validatorAddresses)
+			err := monitorNodes[0].CheckValidator(validatorAddresses)
+			if nil != err {
+				waitTime = waitTime * 2
+				time.Sleep(time.Second * waitTime)
+				continue
 			}
 
-			time.Sleep(time.Second * time.Duration(interval))
+			waitTime = time.Duration(interval)
+			time.Sleep(time.Second * waitTime)
 		}
 	}()
 }
