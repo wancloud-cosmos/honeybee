@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
-    <title>未投票的提议</title>
+    <title>错误</title>
 
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -18,14 +18,7 @@
     <![endif]-->
   </head>
   <body>
-	<div class="list-group">
-	{{range .Proposals}}
- 	 	<a href="/vote?id={{.ProposalID}}&title={{.Title}}&desc={{.Description}}" class="list-group-item">
-    		<h4 class="list-group-item-heading">({{.ProposalID}}) {{.Title}}</h4>
-   			<p class="list-group-item-text">{{.Description}}</p>
-  		</a>
-	{{end}}
-	</div>
+	<h1>	{{.Error}}</h1>
 
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>

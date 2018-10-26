@@ -30,7 +30,7 @@ func ReadyForVoteHandler(query string, data events.EventData) error {
 
 			beego.Info("proposal-id:", id, "ready for vote")
 
-			AutoVote(id)
+			Vote(id)
 
 			return nil
 		}

@@ -10,16 +10,16 @@ address = "9B7FC4388E6A2DCC6DC45984F9B3316FC6CF79F6"
 address = "127.0.0.1:26657"
 
 [email]
-host = smtp.163.com
-user = wancloud2018@163.com
-password = wancloud319
+host = smtp.ym.163.com:25
+user = jira@wancloud.io
+password = yourpassword
 
 [sms]
 #user = 70522:admin
 #password = 62217193
 
 [receiptor]
-email = "dumanxiang@qq.com,dumanxiang@gmail.com"
+email = "dumanxiang@qq.com;dumanxiang@gmail.com"
 #mobile = "18502120532,17317916768"
 
 

@@ -1,39 +1,47 @@
 package app
 
 import (
+	"net/smtp"
 	"strings"
 
 	"github.com/astaxie/beego"
-	"gopkg.in/gomail.v2"
 )
 
 var (
-	host, user, password string
-	emailTos             []string
+	host, user, password, to string
 )
 
 func init() {
 	host = beego.AppConfig.String("email::host")
 	user = beego.AppConfig.String("email::user")
 	password = beego.AppConfig.String("email::password")
-
-	emailTos = strings.Split(beego.AppConfig.String("receiptor::email"), ",")
+	to = beego.AppConfig.String("receiptor::email")
 }
 
-func SendMail(tos []string, subject, body string) error {
-	m := gomail.NewMessage()
-	m.SetHeader("From", user)
-	m.SetHeader("To", tos...)
-	m.SetHeader("Subject", subject)
-	m.SetBody("text/html", body)
-
-	err := gomail.NewPlainDialer(host, 25, user, password).DialAndSend(m)
-	if err != nil {
-		beego.Error("dial and send email failed,err:", err)
+func SendMail(subject, body string) error {
+	err := doSendMail(user, password, host, to, subject, body, "")
+	if nil != err {
+		beego.Error(err)
 		return err
 	}
 
-	beego.Info("send to:", tos, "email success")
+	beego.Info("send to:", to, "email success")
 
 	return nil
+}
+
+func doSendMail(user, password, host, to, subject, body, mailtype string) error {
+	hp := strings.Split(host, ":")
+	auth := smtp.PlainAuth("", user, password, hp[0])
+	var content_type string
+	if mailtype == "html" {
+		content_type = "Content-Type: text/" + mailtype + "; charset=UTF-8"
+	} else {
+		content_type = "Content-Type: text/plain" + "; charset=UTF-8"
+	}
+
+	msg := []byte("To: " + to + "\r\nFrom: " + user + "\r\nSubject: " + subject + "\r\n" + content_type + "\r\n\r\n" + body)
+	send_to := strings.Split(to, ";")
+	err := smtp.SendMail(host, auth, user, send_to, msg)
+	return err
 }
