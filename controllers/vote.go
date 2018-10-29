@@ -14,8 +14,29 @@ type VoteController struct {
 
 func (c *VoteController) Get() {
 	desc := c.GetString("desc")
-	id := c.GetString("id")
+	id, err := c.GetInt64("id")
+	if nil != err {
+		beego.Error(err)
+		c.Data["Error"] = err.Error()
+		c.TplName = "error.tpl"
+
+		return
+	}
 	title := c.GetString("title")
+
+	v, err := http.QueryVote(id, app.GovVoter)
+	if nil == err {
+		switch v.Ooption {
+		case "No":
+			c.Data["No"] = true
+		case "Yes":
+			c.Data["Yes"] = true
+		case "Abstain":
+			c.Data["Abstain"] = true
+		case "NoWithVeto":
+			c.Data["NoWithVeto"] = true
+		}
+	}
 
 	c.Data["ProposalID"] = id
 	c.Data["Title"] = title

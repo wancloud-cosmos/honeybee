@@ -30,26 +30,42 @@
 				
 				<div class="radio">
 					  <label>
-					    <input type="radio" name="optionsRadios" id="Yes" value="Yes">
+					{{if .Yes}}
+						<input type="radio" name="optionsRadios" id="Yes" value="Yes" checked>
+					{{else}}
+						<input type="radio" name="optionsRadios" id="Yes" value="Yes" >
+					{{end}}
 					    Yes
 					  </label>
 					</div>
 					
 					<div class="radio">
 					  <label>
-					    <input type="radio" name="optionsRadios" id="No" value="No" checked>
+					 {{if .No}}
+						 <input type="radio" name="optionsRadios" id="No" value="No" checked>
+					{{else}}
+							 <input type="radio" name="optionsRadios" id="No" value="No">
+					{{end}}
 						No
 					  </label>
 					</div>
 					<div class="radio">
 					  <label>
-					    <input type="radio" name="optionsRadios" id="Abstain" value="Abstain" >
+						{{if .Abstain}}
+							<input type="radio" name="optionsRadios" id="Abstain" value="Abstain" checked>
+						{{else}}
+							<input type="radio" name="optionsRadios" id="Abstain" value="Abstain" >
+						{{end}}
 						Abstain
 					  </label>
 					</div>
 					<div class="radio">
 					  <label>
-					    <input type="radio" name="optionsRadios" id="NoWithVeto" value="NoWithVeto" >
+						{{if .NoWithVeto}}
+							<input type="radio" name="optionsRadios" id="NoWithVeto" value="NoWithVeto" checked>
+						{{else}}
+							 <input type="radio" name="optionsRadios" id="NoWithVeto" value="NoWithVeto">
+						{{end}}
 						NoWithVeto
 					  </label>
 					</div>
@@ -59,9 +75,6 @@
 		
 		</div>
 	</div>
-
-
-	
 
     <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>

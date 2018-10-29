@@ -82,22 +82,29 @@ func vote(id int64) error {
 	emailTitle := fmt.Sprintf("vote proposal-id:%d ", id)
 	emailBody := fmt.Sprintf("vote proposal-id:%d ", id)
 
-	err := http.Vote(id, GovVoter, http.OptionNoWithVeto)
-	if nil != err {
-		beego.Error(err)
+	for i := 0; i < 3; i++ {
+		err := http.Vote(id, GovVoter, http.OptionNoWithVeto)
+		if nil != err {
+			beego.Error(err)
 
-		emailTitle += " failed"
-		emailBody += " failed,err:" + err.Error()
-	} else {
-		emailTitle += " success"
-		emailBody += " success"
+			emailTitle += " failed"
+			emailBody += " failed,err:" + err.Error()
+
+			time.Sleep(time.Second * 5)
+			continue
+		} else {
+			emailTitle += " success"
+			emailBody += " success"
+
+			break
+		}
 	}
 
 	//try 3 times
 	for i := 0; i < 3; i++ {
 		err := SendMail(emailTitle, emailBody)
 		if nil != err {
-			time.Sleep(time.Second * 10)
+			time.Sleep(time.Second * 5)
 			continue
 		}
 
