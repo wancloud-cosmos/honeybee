@@ -54,6 +54,10 @@ func Vote(id int64) {
 				continue
 			}
 
+			if p.IsPassedStatus() || p.IsRejectedStatus() {
+				return
+			}
+
 			h, err := LatestBlockHeight()
 			if nil != err {
 				beego.Error(err)
