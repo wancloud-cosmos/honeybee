@@ -17,6 +17,7 @@ func init() {
 	nodeAddresses := strings.Split(beego.AppConfig.String("node::address"), ",")
 	for _, v := range nodeAddresses {
 		n := node{Addr: v}
+		n.cli = client.NewHTTP(n.Addr, "/websocket")
 		monitorNodes = append(monitorNodes, &n)
 	}
 
@@ -29,6 +30,7 @@ func init() {
 
 type node struct {
 	Addr string
+	cli  *client.HTTP
 }
 
 func (n *node) String() string {
@@ -37,7 +39,7 @@ func (n *node) String() string {
 
 //check if the validator in the validator set
 func (n *node) CheckValidator(addrs []string) error {
-	vset, err := client.NewHTTP(n.Addr, "/websocket").Validators(nil)
+	vset, err := n.cli.Validators(nil)
 	if nil != err {
 		emailBody := fmt.Sprintf("get validator set failed,node:%s,err:%s", n.String(), err.Error())
 		beego.Error(emailBody)
