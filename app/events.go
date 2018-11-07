@@ -3,14 +3,15 @@ package app
 import (
 	"encoding/json"
 
+	"context"
+	"fmt"
+	"validator-monitor/utils"
+
 	"github.com/astaxie/beego"
 	"github.com/tendermint/tendermint/libs/events"
 	ctypes "github.com/tendermint/tendermint/rpc/core/types"
 	types "github.com/tendermint/tendermint/rpc/lib/types"
 	tmtypes "github.com/tendermint/tendermint/types"
-
-	"context"
-	"validator-monitor/utils"
 
 	"github.com/tendermint/tendermint/libs/pubsub/query"
 	cli "github.com/tendermint/tendermint/rpc/lib/client"
@@ -30,7 +31,11 @@ func ReadyForVoteHandler(query string, data events.EventData) error {
 
 			beego.Info("proposal-id:", id, "ready for vote")
 
-			Vote(id)
+			//			Vote(id)
+
+			subject := fmt.Sprintf("id:%d ready for vote", id)
+			body := subject
+			SendMail3Times(subject, body)
 
 			return nil
 		}

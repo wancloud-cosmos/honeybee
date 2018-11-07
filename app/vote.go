@@ -100,16 +100,7 @@ func vote(id int64) error {
 		}
 	}
 
-	//try 3 times
-	for i := 0; i < 3; i++ {
-		err := SendMail(emailTitle, emailBody)
-		if nil != err {
-			time.Sleep(time.Second * 5)
-			continue
-		}
-
-		break
-	}
+	SendMail3Times(emailTitle, emailBody)
 
 	return nil
 }
