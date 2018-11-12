@@ -13,6 +13,7 @@ address = "127.0.0.1:26657"
 host = smtp.ym.163.com:25
 user = jira@wancloud.io
 password = yourpassword
+from = gaia-9001
 
 [sms]
 #user = 70522:admin
