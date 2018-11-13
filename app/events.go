@@ -51,7 +51,7 @@ func EventHandler(respCh chan types.RPCResponse, handler SubscribeCallbackFunc) 
 			beego.Error(err)
 			return
 		}
-		beego.Debug(q, data)
+		beego.Debug("received event:", q, data)
 
 		if "" == q {
 			continue

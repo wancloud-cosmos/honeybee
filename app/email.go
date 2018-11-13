@@ -18,7 +18,7 @@ func init() {
 	user = beego.AppConfig.String("email::user")
 	password = beego.AppConfig.String("email::password")
 	to = beego.AppConfig.String("receiptor::email")
-	fromName = beego.AppConfig.String("sms::from")
+	fromName = beego.AppConfig.String("email::from")
 }
 
 func SendMail3Times(subject, body string) {

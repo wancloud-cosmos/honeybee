@@ -2,6 +2,7 @@ package http
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -14,6 +15,7 @@ import (
 
 var (
 	ClientRESTServerAddress string
+	DefaultHTTPClient       *http.Client = nil
 )
 
 func init() {
@@ -21,6 +23,11 @@ func init() {
 	if "" == ClientRESTServerAddress {
 		panic("client-rest-server::address invalid")
 	}
+
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	DefaultHTTPClient = &http.Client{Transport: tr}
 }
 
 func Call(method, url string, reqData, result interface{}) error {
@@ -42,7 +49,7 @@ func Call(method, url string, reqData, result interface{}) error {
 		return err
 	}
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := DefaultHTTPClient.Do(req)
 	if nil != err {
 		beego.Error(err)
 		return err
