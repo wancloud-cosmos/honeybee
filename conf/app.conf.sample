@@ -1,7 +1,7 @@
 appname = validator-monitor
 httpport = 8080
 runmode = dev
-interval = 10
+interval = 10 #隔多久时间查询一次指定验证者是否还在验证集合中
 
 [validator]
 address = "9B7FC4388E6A2DCC6DC45984F9B3316FC6CF79F6"
@@ -13,24 +13,29 @@ address = "127.0.0.1:26657"
 host = smtp.ym.163.com:25
 user = jira@wancloud.io
 password = yourpassword
-from = gaia-9001
+project = gaia-9001 #标示告警来自于哪些项目
+to = "dumanxiang@qq.com;dumanxiang@gmail.com"
 
 [sms]
-#user = 70522:admin
-#password = 62217193
-
-[receiptor]
-email = "dumanxiang@qq.com;dumanxiang@gmail.com"
-#mobile = "18502120532,17317916768"
-
+enable=false #是否开启短信服务
+user = 70522:admin
+password = 62217193
+from = 1
+project = gaia-9001 #标示告警来自于哪些项目
+to ="18502120532,17317916768"
 
 [client-rest-server]
 address  = "http://127.0.0.1:1317"
 
+#调用客户端的公有flag
 [baseflags]
 name = "node1"
 password = "12345678"
 chaindid = "test-chain-Y3jjoN"
 
 [gov]
+# 自动投票的验证者地址
 voter = "cosmos1cen8ry9qhrzkw838zukz83fxgpw7lrd2597pll"
+autovote = false
+delayblock = 100
+option = Yes #Yes/No/NoWithVeto/Abstain

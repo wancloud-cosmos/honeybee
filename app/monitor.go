@@ -1,41 +1,23 @@
 package app
 
 import (
-	"strings"
 	"time"
 
-	"github.com/astaxie/beego"
+	"validator-monitor/app/config"
 )
-
-var (
-	validatorAddresses []string
-	interval           time.Duration
-)
-
-func init() {
-	validatorAddresses = strings.Split(beego.AppConfig.String("validator::address"), ",")
-	beego.Debug("config validator::address ", validatorAddresses)
-
-	inter, err := beego.AppConfig.Int64("interval")
-	if nil != err {
-		panic(err)
-	}
-
-	interval = time.Second * time.Duration(inter)
-}
 
 func Watch() {
 	go func() {
-		var waitTime = interval
+		var waitTime = config.Interval
 		for {
-			err := monitorNodes[0].CheckValidator(validatorAddresses)
+			err := monitorNode.CheckValidator(config.ValidatorAddresses)
 			if nil != err {
 				waitTime = waitTime * 2
 				time.Sleep(waitTime)
 				continue
 			}
 
-			waitTime = interval
+			waitTime = config.Interval
 			time.Sleep(waitTime)
 		}
 	}()

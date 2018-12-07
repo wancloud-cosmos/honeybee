@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"validator-monitor/app"
+	"validator-monitor/app/gov"
 	"validator-monitor/app/http"
 
 	"github.com/astaxie/beego"
@@ -21,7 +21,7 @@ func (c *MainController) Get() {
 		return
 	}
 
-	votedProposals, err := http.QueryProposals("VotingPeriod", "", app.GovVoter)
+	votedProposals, err := http.QueryProposals("VotingPeriod", "", gov.GovVoter)
 	if nil != err {
 		beego.Error(err)
 		c.Data["Error"] = err.Error()

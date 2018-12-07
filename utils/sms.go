@@ -1,8 +1,8 @@
-package app
+package utils
 
 import (
+	"fmt"
 	"net/http"
-	"strings"
 
 	"github.com/astaxie/beego"
 )
@@ -12,15 +12,30 @@ const (
 )
 
 var (
-	smsUser, smsPassword string
+	smsUser, smsPassword, smsFrom, smsTo, smsProject string
+	smsEnable                                        bool
 )
 
 func init() {
 	smsUser = beego.AppConfig.String("sms::user")
 	smsPassword = beego.AppConfig.String("sms::password")
+	smsFrom = beego.AppConfig.String("sms::from")
+	smsEnable = beego.AppConfig.DefaultBool("sms::enable", false)
+	smsTo = beego.AppConfig.String("sms::to")
+	smsProject = beego.AppConfig.String("sms::project")
 }
 
-func SendSMS(tos []string, content string) error {
+func SendSMS(content string) error {
+	subj := fmt.Sprintf("[%s] %s", smsProject, content)
+
+	return doSendSMS(smsTo, subj)
+}
+
+func doSendSMS(to string, content string) error {
+	if !smsEnable {
+		return nil
+	}
+
 	req, err := http.NewRequest(http.MethodGet, SMS_HOST, nil)
 	if nil != err {
 		beego.Error(err)
@@ -29,12 +44,11 @@ func SendSMS(tos []string, content string) error {
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("username", smsUser)
 	req.Header.Set("password", smsPassword)
-	req.Header.Set("from", "80")
-
-	beego.Debug("send to:", strings.Join(tos, ","), "sms")
-
-	req.Header.Set("to", strings.Join(tos, ","))
+	req.Header.Set("from", smsFrom)
+	req.Header.Set("to", to)
 	req.Header.Set("content", content)
+
+	beego.Debug("send to:", to, "sms")
 
 	resp, err := http.DefaultClient.Do(req)
 	if nil != err {

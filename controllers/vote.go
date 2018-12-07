@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"fmt"
-	"validator-monitor/app"
+	"validator-monitor/app/gov"
 	"validator-monitor/app/http"
 
 	"github.com/astaxie/beego"
@@ -24,7 +24,7 @@ func (c *VoteController) Get() {
 	}
 	title := c.GetString("title")
 
-	v, err := http.QueryVote(id, app.GovVoter)
+	v, err := http.QueryVote(id, gov.GovVoter)
 	if nil == err {
 		switch v.Ooption {
 		case "No":
@@ -65,7 +65,7 @@ func (c *VoteController) Post() {
 		return
 	}
 
-	err = http.Vote(id, app.GovVoter, opt)
+	err = http.Vote(id, gov.GovVoter, opt)
 	if nil != err {
 		beego.Error(err)
 		c.Data["Error"] = err.Error()

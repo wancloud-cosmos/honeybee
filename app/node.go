@@ -2,7 +2,8 @@ package app
 
 import (
 	"fmt"
-	"strings"
+	"validator-monitor/app/config"
+	"validator-monitor/utils"
 
 	"github.com/astaxie/beego"
 	"github.com/tendermint/tendermint/rpc/client"
@@ -10,22 +11,14 @@ import (
 )
 
 var (
-	monitorNodes []*node
+	monitorNode *node
 )
 
 func init() {
-	nodeAddresses := strings.Split(beego.AppConfig.String("node::address"), ",")
-	for _, v := range nodeAddresses {
-		n := node{Addr: v}
-		n.cli = client.NewHTTP(n.Addr, "/websocket")
-		monitorNodes = append(monitorNodes, &n)
+	monitorNode = &node{
+		Addr: config.NodeAddr,
+		cli:  client.NewHTTP(config.NodeAddr, "/websocket"),
 	}
-
-	if 1 > len(monitorNodes) {
-		panic("node:address invalid")
-	}
-
-	beego.Debug("config node::address ", nodeAddresses)
 }
 
 type node struct {
@@ -43,7 +36,7 @@ func (n *node) CheckValidator(addrs []string) error {
 	if nil != err {
 		emailBody := fmt.Sprintf("get validator set failed,node:%s,err:%s", n.String(), err.Error())
 		beego.Error(emailBody)
-		SendMail("get validatorSet failed", emailBody)
+		utils.SendMail("get validatorSet failed", emailBody)
 
 		return err
 	}
@@ -53,7 +46,8 @@ func (n *node) CheckValidator(addrs []string) error {
 			emailBody := fmt.Sprintf("validator:%s is not in vset via node:%s", a, n.String())
 			beego.Error(emailBody)
 			err = fmt.Errorf(emailBody)
-			SendMail("validator is not in vset", emailBody)
+			utils.SendMail("validator is not in vset", emailBody)
+			utils.SendSMS(emailBody)
 		}
 	}
 

@@ -1,6 +1,9 @@
 package app
 
 import (
+	"validator-monitor/app/gov"
+	"validator-monitor/app/pubsub"
+
 	"github.com/tendermint/tendermint/libs/pubsub/query"
 )
 
@@ -8,8 +11,8 @@ func Start() {
 	Watch()
 
 	querySubmitProposal := query.MustParse(`action  = 'submit-proposal'`)
-	Subscribe(querySubmitProposal, ReadyForVoteHandler)
+	pubsub.Subscribe(querySubmitProposal, gov.ReadyForVoteHandler)
 
 	queryDeposit := query.MustParse(`action  = 'deposit'`)
-	Subscribe(queryDeposit, ReadyForVoteHandler)
+	pubsub.Subscribe(queryDeposit, gov.ReadyForVoteHandler)
 }

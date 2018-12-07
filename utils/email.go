@@ -1,4 +1,4 @@
-package app
+package utils
 
 import (
 	"fmt"
@@ -10,15 +10,15 @@ import (
 )
 
 var (
-	host, user, password, to, fromName string
+	host, user, password, to, projectName string
 )
 
 func init() {
 	host = beego.AppConfig.String("email::host")
 	user = beego.AppConfig.String("email::user")
 	password = beego.AppConfig.String("email::password")
-	to = beego.AppConfig.String("receiptor::email")
-	fromName = beego.AppConfig.String("email::from")
+	to = beego.AppConfig.String("email::to")
+	projectName = beego.AppConfig.String("email::project")
 }
 
 func SendMail3Times(subject, body string) {
@@ -34,7 +34,7 @@ func SendMail3Times(subject, body string) {
 }
 
 func SendMail(subject, body string) error {
-	subj := fmt.Sprintf("[%s] %s", fromName, subject)
+	subj := fmt.Sprintf("[%s] %s", projectName, subject)
 	err := doSendMail(user, password, host, to, subj, body, "")
 	if nil != err {
 		beego.Error(err)
