@@ -14,7 +14,7 @@ type VoteController struct {
 
 func (c *VoteController) Get() {
 	desc := c.GetString("desc")
-	id, err := c.GetInt64("id")
+	id, err := c.GetUint64("id")
 	if nil != err {
 		beego.Error(err)
 		c.Data["Error"] = err.Error()
@@ -46,7 +46,7 @@ func (c *VoteController) Get() {
 
 func (c *VoteController) Post() {
 	option := c.GetString("optionsRadios")
-	id, err := c.GetInt64("id")
+	id, err := c.GetUint64("id")
 	if nil != err {
 		beego.Error(err)
 		c.Data["Error"] = err.Error()

@@ -18,7 +18,7 @@ var (
 
 	GovOption http.VoteOption
 
-	GovDelayBlock int64
+	GovDelayTime time.Duration
 )
 
 func init() {
@@ -27,11 +27,11 @@ func init() {
 		panic("gov::voter invalid")
 	}
 
-	var err error
-	GovDelayBlock, err = beego.AppConfig.Int64("gov::delayblock")
+	delayTime, err := beego.AppConfig.Int64("gov::delay")
 	if nil != err {
-		panic("gov::delayblock invalid")
+		panic("gov::delay invalid")
 	}
+	GovDelayTime = time.Duration(delayTime)
 
 	option := beego.AppConfig.String("gov::option")
 	if "" == option {
@@ -58,7 +58,7 @@ func LatestBlockHeight() (int64, error) {
 	return status.SyncInfo.LatestBlockHeight, nil
 }
 
-func IsVoted(id int64, voter string) bool {
+func IsVoted(id uint64, voter string) bool {
 	_, err := http.QueryVote(id, voter)
 	if nil != err {
 		beego.Error(err)
@@ -68,7 +68,7 @@ func IsVoted(id int64, voter string) bool {
 	return true
 }
 
-func Vote(id int64) {
+func Vote(id uint64) {
 	go func() {
 		for {
 			if IsVoted(id, GovVoter) {
@@ -86,15 +86,8 @@ func Vote(id int64) {
 				return
 			}
 
-			h, err := LatestBlockHeight()
-			if nil != err {
-				beego.Error(err)
-				time.Sleep(interval)
-				continue
-			}
-
 			if p.IsVotingPeriodStatus() &&
-				h > p.VotingStartBlock+GovDelayBlock &&
+				time.Now().UTC().After(p.VotingStartTime.Add(GovDelayTime)) &&
 				!IsVoted(id, GovVoter) {
 
 				vote(id)
@@ -106,9 +99,9 @@ func Vote(id int64) {
 	}()
 }
 
-func vote(id int64) error {
-	emailTitle := fmt.Sprintf("vote proposal-id:%d ", id)
-	emailBody := fmt.Sprintf("vote proposal-id:%d ", id)
+func vote(id uint64) error {
+	emailTitle := fmt.Sprintf("auto vote[%s] for proposal-id:%d ", GovOption, id)
+	emailBody := fmt.Sprintf("auto vote[%s] for proposal-id:%d ", GovOption, id)
 
 	var err error = nil
 	for i := 0; i < 3; i++ {

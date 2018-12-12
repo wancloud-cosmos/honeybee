@@ -11,6 +11,9 @@ import (
 
 var (
 	IsGovAutoVote bool
+
+	TagActionDeposit        = "deposit"
+	TagActionSubmitProposal = "submit_proposal"
 )
 
 func init() {
@@ -20,15 +23,31 @@ func init() {
 func ReadyForVoteHandler(query string, data events.EventData) error {
 	tags := data.(tmtypes.EventDataTx).TxResult.Result.Tags
 
+	var action string
 	for _, v := range tags {
 		beego.Debug(string(v.Key), string(v.Value))
+		if string(v.Key) == "action" {
+			action = string(v.Value)
+		}
 
 		if "voting-period-start" == string(v.Key) {
-			var id int64
-			err := utils.CDC.UnmarshalBinaryBare(v.Value, &id)
-			if nil != err {
-				beego.Error(err)
-				return err
+			var id uint64
+			if TagActionDeposit == action {
+				err := utils.CDC.UnmarshalBinaryBare(v.Value, &id)
+				if nil != err {
+					beego.Error(err)
+					return err
+				}
+
+			} else if TagActionSubmitProposal == action {
+				err := utils.CDC.UnmarshalBinaryLengthPrefixed(v.Value, &id)
+				if nil != err {
+					beego.Error(err)
+					return err
+				}
+			} else {
+				beego.Error("action :" + action + "invalid")
+				return nil
 			}
 
 			//notify admin user that a new proposal is ready for vote

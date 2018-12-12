@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	accountsUri = "/accounts/%s"
+	accountsUri = "/auth/accounts/%s"
 )
 
 type AccountResp struct {

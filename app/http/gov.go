@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"strconv"
+	"time"
 
 	"github.com/astaxie/beego"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -31,11 +32,11 @@ type voteReq struct {
 	Option  VoteOption     `json:"option"` //  option from OptionSet chosen by the voter
 }
 
-func VoteUrl(id int64) string {
+func VoteUrl(id uint64) string {
 	return fmt.Sprintf(ClientRESTServerAddress+voteUri, id)
 }
 
-func Vote(id int64, voter string, option VoteOption) error {
+func Vote(id uint64, voter string, option VoteOption) error {
 	var br baseReq
 	br.ChainID = flagChainID
 	br.Name = flagName
@@ -48,7 +49,7 @@ func Vote(id int64, voter string, option VoteOption) error {
 	}
 	br.AccountNumber = aInfo.AccountNumber
 	br.Sequence = aInfo.Sequence
-	br.Gas = 20000 //TODO configable
+	br.Gas = 200000 //TODO configable
 
 	var vr voteReq
 	addr, err := sdk.AccAddressFromBech32(voter)
@@ -76,11 +77,11 @@ type queryVoteResp struct {
 	Ooption    string `json:"option"`
 }
 
-func QueryVoteUrl(id int64, voter string) string {
+func QueryVoteUrl(id uint64, voter string) string {
 	return fmt.Sprintf(ClientRESTServerAddress+queryVoteUri, id, voter)
 }
 
-func QueryVote(id int64, voter string) (*queryVoteResp, error) {
+func QueryVote(id uint64, voter string) (*queryVoteResp, error) {
 	var resp queryVoteResp
 	err := GET(QueryVoteUrl(id, voter), &resp)
 	if nil != err {
@@ -95,21 +96,23 @@ type queryProposalResp struct {
 }
 
 type queryProposalRespValue struct {
-	VotingStartBlock string `json:"voting_start_block"`
-	SubmitBlock      string `json:"submit_block"`
-	ProposalID       string `json:"proposal_id"`
-	Title            string `json:"title"`
-	Description      string `json:"description"`
-	ProposalStatus   string `json:"proposal_status"`
+	// VotingStartBlock string `json:"voting_start_block"`
+	// SubmitBlock      string `json:"submit_block"`
+	ProposalID      string    `json:"proposal_id"`
+	Title           string    `json:"title"`
+	Description     string    `json:"description"`
+	ProposalStatus  string    `json:"proposal_status"`
+	VotingStartTime time.Time `json:"voting_start_time"`
 }
 
 type Proposal struct {
-	VotingStartBlock int64  `json:"voting_start_block"`
-	SubmitBlock      int64  `json:"submit_block"`
-	ProposalID       int64  `json:"proposal_id"`
-	Title            string `json:"title"`
-	Description      string `json:"description"`
-	ProposalStatus   string `json:"proposal_status"`
+	// VotingStartBlock int64     `json:"voting_start_block"`
+	// SubmitBlock     int64     `json:"submit_block"`
+	ProposalID      uint64    `json:"proposal_id"`
+	Title           string    `json:"title"`
+	Description     string    `json:"description"`
+	ProposalStatus  string    `json:"proposal_status"`
+	VotingStartTime time.Time `json:"voting_start_time"`
 }
 
 func (p *Proposal) IsPassedStatus() bool {
@@ -128,11 +131,11 @@ func (p *Proposal) IsVotingPeriodStatus() bool {
 	return "VotingPeriod" == p.ProposalStatus
 }
 
-func QueryProposalUrl(id int64) string {
+func QueryProposalUrl(id uint64) string {
 	return fmt.Sprintf(ClientRESTServerAddress+queryProposalUri, id)
 }
 
-func QueryProposal(id int64) (*Proposal, error) {
+func QueryProposal(id uint64) (*Proposal, error) {
 	var resp queryProposalResp
 	err := GET(QueryProposalUrl(id), &resp)
 	if nil != err {
@@ -141,22 +144,23 @@ func QueryProposal(id int64) (*Proposal, error) {
 	}
 
 	var p Proposal
-	p.SubmitBlock, err = strconv.ParseInt(resp.Value.SubmitBlock, 10, 64)
-	if nil != err {
-		beego.Error(err)
-		return nil, err
-	}
+	// p.SubmitBlock, err = strconv.ParseInt(resp.Value.SubmitBlock, 10, 64)
+	// if nil != err {
+	// 	beego.Error(err)
+	// 	return nil, err
+	// }
 
-	p.VotingStartBlock, err = strconv.ParseInt(resp.Value.VotingStartBlock, 10, 64)
-	if nil != err {
-		beego.Error(err)
-		return nil, err
-	}
+	// p.VotingStartBlock, err = strconv.ParseInt(resp.Value.VotingStartBlock, 10, 64)
+	// if nil != err {
+	// 	beego.Error(err)
+	// 	return nil, err
+	// }
 
 	p.Description = resp.Value.Description
 	p.Title = resp.Value.Title
 	p.ProposalID = id
 	p.ProposalStatus = resp.Value.ProposalStatus
+	p.VotingStartTime = resp.Value.VotingStartTime
 
 	return &p, nil
 }
@@ -176,19 +180,19 @@ func QueryProposals(status, depositer, voter string) ([]*Proposal, error) {
 	ps := make([]*Proposal, 0, len(proposals))
 	for _, resp := range proposals {
 		var p Proposal
-		p.SubmitBlock, err = strconv.ParseInt(resp.Value.SubmitBlock, 10, 64)
-		if nil != err {
-			beego.Error(err)
-			return nil, err
-		}
+		// p.SubmitBlock, err = strconv.ParseInt(resp.Value.SubmitBlock, 10, 64)
+		// if nil != err {
+		// 	beego.Error(err)
+		// 	return nil, err
+		// }
 
-		p.VotingStartBlock, err = strconv.ParseInt(resp.Value.VotingStartBlock, 10, 64)
-		if nil != err {
-			beego.Error(err)
-			return nil, err
-		}
+		// p.VotingStartBlock, err = strconv.ParseInt(resp.Value.VotingStartBlock, 10, 64)
+		// if nil != err {
+		// 	beego.Error(err)
+		// 	return nil, err
+		// }
 
-		p.ProposalID, err = strconv.ParseInt(resp.Value.ProposalID, 10, 64)
+		p.ProposalID, err = strconv.ParseUint(resp.Value.ProposalID, 10, 64)
 		if nil != err {
 			beego.Error(err)
 			return nil, err
@@ -197,6 +201,7 @@ func QueryProposals(status, depositer, voter string) ([]*Proposal, error) {
 		p.Description = resp.Value.Description
 		p.Title = resp.Value.Title
 		p.ProposalStatus = resp.Value.ProposalStatus
+		p.VotingStartTime = resp.Value.VotingStartTime
 
 		ps = append(ps, &p)
 	}

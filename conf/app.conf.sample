@@ -25,7 +25,7 @@ project = gaia-9001 #标示告警来自于哪些项目
 to ="18502120532,17317916768"
 
 [client-rest-server]
-address  = "http://127.0.0.1:1317"
+address  = "https://127.0.0.1:1317"
 
 #调用客户端的公有flag
 [baseflags]
@@ -37,5 +37,6 @@ chaindid = "test-chain-Y3jjoN"
 # 自动投票的验证者地址
 voter = "cosmos1cen8ry9qhrzkw838zukz83fxgpw7lrd2597pll"
 autovote = false
-delayblock = 100
+# 60*60*24 == one day
+delay = 86400
 option = Yes #Yes/No/NoWithVeto/Abstain

@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"validator-monitor/app/gov"
 	"validator-monitor/app/pubsub"
 
@@ -10,9 +11,9 @@ import (
 func Start() {
 	Watch()
 
-	querySubmitProposal := query.MustParse(`action  = 'submit-proposal'`)
+	querySubmitProposal := query.MustParse(fmt.Sprintf(`action  = '%s'`, gov.TagActionSubmitProposal))
 	pubsub.Subscribe(querySubmitProposal, gov.ReadyForVoteHandler)
 
-	queryDeposit := query.MustParse(`action  = 'deposit'`)
+	queryDeposit := query.MustParse(fmt.Sprintf(`action  = '%s'`, gov.TagActionDeposit))
 	pubsub.Subscribe(queryDeposit, gov.ReadyForVoteHandler)
 }

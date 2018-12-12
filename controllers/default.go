@@ -52,7 +52,7 @@ func (c *MainController) Get() {
 	c.TplName = "index.tpl"
 }
 
-func IsVoted(id int64, ps []*http.Proposal) bool {
+func IsVoted(id uint64, ps []*http.Proposal) bool {
 	for _, v := range ps {
 		if id == v.ProposalID {
 			return true
