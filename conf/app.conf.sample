@@ -43,4 +43,5 @@ voter = "cosmos1cen8ry9qhrzkw838zukz83fxgpw7lrd2597pll"
 autovote = false
 # 60*60*24 == one day
 delay = 86400
-option = Yes #Yes/No/NoWithVeto/Abstain
+#Yes/No/NoWithVeto/Abstain
+option = Yes 
