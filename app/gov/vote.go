@@ -31,7 +31,7 @@ func init() {
 	if nil != err {
 		panic("gov::delay invalid")
 	}
-	GovDelayTime = time.Duration(delayTime)
+	GovDelayTime = time.Duration(delayTime) * time.Second
 
 	option := beego.AppConfig.String("gov::option")
 	if "" == option {

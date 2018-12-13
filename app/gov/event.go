@@ -2,6 +2,7 @@ package gov
 
 import (
 	"fmt"
+	"time"
 	"validator-monitor/utils"
 
 	"github.com/astaxie/beego"
@@ -59,6 +60,7 @@ func ReadyForVoteHandler(query string, data events.EventData) error {
 
 			//auto vote
 			if IsGovAutoVote {
+				beego.Info(fmt.Sprintf("auto vote[%s] in %d seconds for id[%d]", GovOption, GovDelayTime/time.Second, id))
 				Vote(id)
 			}
 

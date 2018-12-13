@@ -48,7 +48,7 @@ func doSendSMS(to string, content string) error {
 	req.Header.Set("to", to)
 	req.Header.Set("content", content)
 
-	beego.Debug("send to:", to, "sms")
+	beego.Debug(fmt.Sprintf("send %s sms(%s)", to, content))
 
 	resp, err := http.DefaultClient.Do(req)
 	if nil != err {

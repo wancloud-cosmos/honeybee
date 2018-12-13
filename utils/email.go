@@ -41,7 +41,7 @@ func SendMail(subject, body string) error {
 		return err
 	}
 
-	beego.Info("send to:", to, "email success")
+	beego.Info(fmt.Sprintf("sending %s email(%s) success", to, body))
 
 	return nil
 }

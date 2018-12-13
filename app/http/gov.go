@@ -85,7 +85,6 @@ func QueryVote(id uint64, voter string) (*queryVoteResp, error) {
 	var resp queryVoteResp
 	err := GET(QueryVoteUrl(id, voter), &resp)
 	if nil != err {
-		beego.Error(err)
 		return nil, err
 	}
 	return &resp, nil

@@ -65,7 +65,6 @@ func Call(method, url string, reqData, result interface{}) error {
 
 	if http.StatusOK != resp.StatusCode {
 		err = fmt.Errorf("%s %s,expected 200,got:%d,err:%s", method, url, resp.StatusCode, string(bin))
-		beego.Error(err)
 
 		return err
 	}
