@@ -12,10 +12,27 @@
 > * 指定节点作恶。
 
 * 注意：
+
 > * 是否有需求同时监控多个验证地址？
 
 ### 监控提议并自动投票
 > 订阅`voting-period-start`事件，收到此事件时发送邮件通知管理员，如果`gov::autovote`字段设置为true时，会自动投票。把手工投票和自动投票结合起来以达到更好的治理效果,在收到订阅的`voting-period-start`事件后会开启一个goroutine检查投票情况，当过了设定的时间后还是没有投票的话，会自动投票，并把投票结果发送给管理员。可以在配置文件中配置自动投票的类型。
+
+### 提供网页用于手工投票
+> 暂时不用
+
+## 部署
+* 根据助记词恢复验证者账户到本地数据库
+
+> `gaiacli keys add <name> --recover`
+
+* 启动客户端的rest服务
+
+> `gaiacli rest-server --chain-id=`
+
+* 生成配置文件并进行设置
+
+> `cp conf/app.conf.sample conf/app.conf`
 
 
 

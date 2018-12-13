@@ -1,7 +1,8 @@
 appname = validator-monitor
 httpport = 8080
 runmode = dev
-interval = 10 #隔多久时间查询一次指定验证者是否还在验证集合中
+#隔多久时间查询一次指定验证者是否还在验证集合中
+interval = 10 
 
 [validator]
 address = "9B7FC4388E6A2DCC6DC45984F9B3316FC6CF79F6"
@@ -13,15 +14,18 @@ address = "127.0.0.1:26657"
 host = smtp.ym.163.com:25
 user = jira@wancloud.io
 password = yourpassword
-project = gaia-9001 #标示告警来自于哪些项目
+#标示告警来自于哪些项目
+project = gaia-9001
 to = "dumanxiang@qq.com;dumanxiang@gmail.com"
 
 [sms]
-enable=false #是否开启短信服务
+#是否开启短信服务
+enable=false
 user = 70522:admin
 password = 62217193
 from = 1
-project = gaia-9001 #标示告警来自于哪些项目
+#标示告警来自于哪些项目
+project = gaia-9001
 to ="18502120532,17317916768"
 
 [client-rest-server]
@@ -34,7 +38,7 @@ password = "12345678"
 chaindid = "test-chain-Y3jjoN"
 
 [gov]
-# 自动投票的验证者地址
+#自动投票的验证者地址,根据gaiacli keys list命令查找
 voter = "cosmos1cen8ry9qhrzkw838zukz83fxgpw7lrd2597pll"
 autovote = false
 # 60*60*24 == one day
