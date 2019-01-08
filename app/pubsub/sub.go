@@ -9,10 +9,11 @@ import (
 
 	"github.com/astaxie/beego"
 	"github.com/tendermint/tendermint/libs/events"
+	tmpubsub "github.com/tendermint/tendermint/libs/pubsub"
 	ctypes "github.com/tendermint/tendermint/rpc/core/types"
 	types "github.com/tendermint/tendermint/rpc/lib/types"
 
-	"github.com/tendermint/tendermint/libs/pubsub/query"
+	// "github.com/tendermint/tendermint/libs/pubsub/query"
 	cli "github.com/tendermint/tendermint/rpc/lib/client"
 )
 
@@ -39,7 +40,7 @@ func EventHandler(respCh chan types.RPCResponse, handler SubscribeCallbackFunc) 
 	}
 }
 
-func Subscribe(q *query.Query, cb SubscribeCallbackFunc) (client *cli.WSClient, err error) {
+func Subscribe(q tmpubsub.Query, cb SubscribeCallbackFunc) (client *cli.WSClient, err error) {
 	client = cli.NewWSClient(config.NodeAddr, "/websocket")
 	err = client.Start()
 	if nil != err {

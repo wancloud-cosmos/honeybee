@@ -5,6 +5,8 @@ import (
 	"validator-monitor/app/gov"
 	"validator-monitor/app/pubsub"
 
+	tmtypes "github.com/tendermint/tendermint/types"
+
 	"github.com/tendermint/tendermint/libs/pubsub/query"
 )
 
@@ -16,4 +18,6 @@ func Start() {
 
 	queryDeposit := query.MustParse(fmt.Sprintf(`action  = '%s'`, gov.TagActionDeposit))
 	pubsub.Subscribe(queryDeposit, gov.ReadyForVoteHandler)
+
+	pubsub.Subscribe(tmtypes.EventQueryNewBlock, NewBlockEventHandler)
 }
