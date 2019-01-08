@@ -23,10 +23,10 @@ func NewBlockEventHandler(query string, data events.EventData) error {
 	commits := block.Block.LastCommit.Precommits
 	beego.Debug(commits)
 	if !monitorNode.IsInLastCommit(addr, commits) {
-		err := fmt.Errorf("addr(%s) miss block(%d)", addr, block.Block.Height)
+		err := fmt.Errorf("addr(%s) miss block(%d)", addr, block.Block.Height-1)
 		beego.Error(err)
 
-		defaultMissBlocks.SetMiss(block.Block.Height)
+		defaultMissBlocks.SetMiss(block.Block.Height - 1)
 
 		//will exit the sub when return error
 		return nil

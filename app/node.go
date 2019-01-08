@@ -1,13 +1,13 @@
 package app
 
 import (
-	"bytes"
 	"fmt"
+	"strings"
 	"validator-monitor/app/config"
 	"validator-monitor/utils"
 
 	"github.com/astaxie/beego"
-	"github.com/tendermint/tendermint/libs/common"
+	// "github.com/tendermint/tendermint/libs/common"
 	"github.com/tendermint/tendermint/rpc/client"
 	"github.com/tendermint/tendermint/types"
 )
@@ -85,7 +85,7 @@ func (n *node) IsInLastCommit(addr string, commits []*types.Vote) bool {
 		}
 
 		//just compare fingerprint
-		if bytes.Equal(common.Fingerprint(v.ValidatorAddress.Bytes()), common.Fingerprint([]byte(addr))) {
+		if strings.HasPrefix(addr, v.ValidatorAddress.String()) {
 			return true
 		}
 	}
