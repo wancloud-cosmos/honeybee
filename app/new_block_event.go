@@ -21,7 +21,6 @@ func NewBlockEventHandler(query string, data events.EventData) error {
 
 	addr := config.ValidatorAddresses[0]
 	commits := block.Block.LastCommit.Precommits
-	beego.Debug(commits)
 	if !monitorNode.IsInLastCommit(addr, commits) {
 		err := fmt.Errorf("addr(%s) miss block(%d)", addr, block.Block.Height-1)
 		beego.Error(err)
