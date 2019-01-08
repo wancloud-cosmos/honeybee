@@ -4,6 +4,13 @@ runmode = dev
 #隔多久时间查询一次指定验证者是否还在验证集合中
 interval = 10 
 
+[missblock]
+#主动查询的时间间隔，单位：秒
+interval = 2
+#连续几个块会触发报警
+miss = 3
+size = 10
+
 [validator]
 address = "9B7FC4388E6A2DCC6DC45984F9B3316FC6CF79F6"
 
