@@ -78,6 +78,10 @@ func (n *node) DidMissBlock(addr string) error {
 
 func (n *node) IsInLastCommit(addr string, commits []*types.Vote) bool {
 	for _, v := range commits {
+		if nil == v {
+			continue
+		}
+
 		if v.ValidatorAddress.String() == addr {
 			return true
 		}
