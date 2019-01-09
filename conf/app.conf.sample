@@ -4,6 +4,10 @@ runmode = dev
 #隔多久时间查询一次指定验证者是否还在验证集合中
 interval = 10 
 
+[log]
+#debug/info/warning/error
+level = debug
+
 [missblock]
 #主动查询的时间间隔，单位：秒
 interval = 2
