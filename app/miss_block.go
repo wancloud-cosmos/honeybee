@@ -66,16 +66,18 @@ func (mbs *MissBlocks) String() string {
 	return string(bin)
 }
 
-func (mbs *MissBlocks) SetMiss(height int64) {
+func (mbs *MissBlocks) SetMiss(height int64, isMiss bool) {
 	index := height % mbs.Size()
 	if 0 == index {
 		mbs.Reset()
+		beego.Debug(mbs)
+
 	}
 
 	if !mbs.Blocks[index].Miss {
 		mbs.missCount++
 	}
-	mbs.Blocks[index] = &Block{Height: height, Miss: true}
+	mbs.Blocks[index] = &Block{Height: height, Miss: isMiss}
 
 	if mbs.missCount >= config.MissBlockLimit {
 		emailBody := fmt.Sprintf("validator(%s) miss block %d/%d,details:%s", mbs.Address, mbs.missCount, config.MissBlockWindowSize, mbs.String())

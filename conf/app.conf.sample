@@ -6,7 +6,7 @@ interval = 10
 
 [log]
 #debug/info/warning/error
-level = debug
+level = info
 
 [missblock]
 #主动查询的时间间隔，单位：秒

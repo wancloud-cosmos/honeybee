@@ -25,11 +25,12 @@ func NewBlockEventHandler(query string, data events.EventData) error {
 		err := fmt.Errorf("addr(%s) miss block(%d)", addr, block.Block.Height-1)
 		beego.Error(err)
 
-		defaultMissBlocks.SetMiss(block.Block.Height - 1)
+		defaultMissBlocks.SetMiss(block.Block.Height-1, true)
 
 		//will exit the sub when return error
 		return nil
 	}
 
+	defaultMissBlocks.SetMiss(block.Block.Height-1, false)
 	return nil
 }
