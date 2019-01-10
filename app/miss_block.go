@@ -70,11 +70,9 @@ func (mbs *MissBlocks) SetMiss(height int64, isMiss bool) {
 	index := height % mbs.Size()
 	if 0 == index {
 		mbs.Reset()
-		beego.Debug(mbs)
-
 	}
 
-	if !mbs.Blocks[index].Miss {
+	if !mbs.Blocks[index].Miss && isMiss {
 		mbs.missCount++
 	}
 	mbs.Blocks[index] = &Block{Height: height, Miss: isMiss}
